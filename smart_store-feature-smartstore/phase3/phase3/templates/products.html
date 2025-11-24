@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+
+<!-- PAGE TITLE -->
+<h2 class="mb-4 fw-bold">{% trans "Products" %}</h2>
+
+<!-- SCAN BAR -->
+<div class="card p-4 mb-4 shadow-sm">
+    <form id="scan-form" onsubmit="handleScan(event)" class="d-flex align-items-center gap-3">
+        <label for="scan-code" class="fw-semibold">{% trans "Scan barcode / RFID:" %}</label>
+        <input id="scan-code" type="text" autocomplete="off" autofocus class="form-control w-25">
+        <button type="submit" class="btn btn-dark">{% trans "Add" %}</button>
+    </form>
+</div>
+
+<!-- PRODUCT GRID -->
+<div class="row g-4">
+
+    {% for p in products %}
+    <div class="col-md-4">
+        <div class="card h-100 shadow-lg border-0 product-card">
+
+            <!-- Placeholder image (you can replace with real product images later) -->
+            <div class="card-img-top product-img d-flex align-items-center justify-content-center">
+                <span class="product-icon">🛒</span>
+            </div>
+
+            <div class="card-body">
+                <h5 class="card-title fw-bold">{{ p.name }}</h5>
+                <p class="card-text text-muted mb-1"><strong>{% trans "Category" %}:</strong> {{ p.category }}</p>
+                <p class="card-text text-muted mb-1"><strong>{% trans "Price" %}:</strong> ${{ p.price }}</p>
+                <p class="card-text text-muted"><strong>{% trans "Stock" %}:</strong> {{ p.stock_quantity }}</p>
+            </div>
+
+            <div class="card-footer bg-white border-0 d-flex justify-content-between">
+
+                <!-- Add to Cart Button -->
+                <button
+                    class="btn btn-primary"
+                    onclick="addToCart('{{ p.id }}', '{{ p.name }}', '{{ p.price }}', '{{ p.stock_quantity }}')">
+                    {% trans "Add to cart" %}
+                </button>
+
+                <!-- Delete product -->
+                <form method="POST" style="display:inline">
+                    {% csrf_token %}
+                    <button type="submit" name="delete_product" value="{{ p.id }}" class="btn btn-outline-danger">
+                        {% trans "Delete" %}
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+<!-- CART SECTION -->
+<div class="card mt-5 p-4 shadow-sm">
+    <h3 class="fw-bold mb-3">{% trans "Cart" %}</h3>
+    <table id="cart-table" class="table table-striped">
+        <thead>
+            <tr>
+                <th>{% trans "Name" %}</th>
+                <th>{% trans "Quantity" %}</th>
+                <th>{% trans "Price" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<!-- CUSTOM STYLES -->
+<style>
+    .product-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .product-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.10);
+    }
+    .product-img {
+        height: 180px;
+        background: #f0f3f7;
+        border-radius: 12px 12px 0 0;
+        font-size: 48px;
+    }
+</style>
+
+{% endblock %}
+
+
+{% blo

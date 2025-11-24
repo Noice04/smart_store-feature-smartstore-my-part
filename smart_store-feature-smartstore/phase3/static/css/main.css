@@ -1,0 +1,177 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f3f4f6;   
+    color: #111827;       
+}
+
+.top-bar {
+    background: #111827;   
+    color: #f9fafb;
+    padding: 16px 24px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.4);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.top-bar h1 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+}
+
+.main-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.main-nav a {
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid #4b5563;
+    font-size: 14px;
+    color: #e5e7eb;
+    background: rgba(31, 41, 55, 0.8);
+}
+
+.main-nav a:hover {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+.content {
+    max-width: 1100px;
+    margin: 24px auto 40px;
+    padding: 0 16px;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.card h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 20px;
+    color: #111827;
+}
+
+form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px 16px;
+}
+
+form p {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+}
+
+form label {
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+input,
+select,
+textarea {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb33;
+}
+
+button[type="submit"],
+button {
+    border: none;
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    background: #2563eb;
+    color: #ffffff;
+    margin-top: 8px;
+}
+
+button[type="submit"]:hover,
+button:hover {
+    background: #1d4ed8;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+th,
+td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+th {
+    text-align: left;
+    background: #f9fafb;
+    font-weight: 600;
+}
+
+.card table {
+    display: block;
+    overflow-x: auto;
+}
+
+hr {
+    display: none; 
+}
+
+#notification-container {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 50;
+}
+
+.notification {
+    background: #111827;
+    color: #f9fafb;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.6);
+}
+
+.notification.success {
+    border-left: 4px solid #22c55e;
+}
+
+.notification.error {
+    border-left: 4px solid #ef4444;
+}

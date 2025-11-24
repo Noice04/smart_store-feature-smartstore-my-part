@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+    <h2>Receipts</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Customer</th>
+            <th>Total</th>
+            <th>Points Earned</th>
+            <th>Date</th>
+        </tr>
+        {% for r in receipts %}
+        <tr>
+            <td>{{ r.id }}</td>
+            <td>{{ r.customer.name }}</td>
+            <td>{{ r.total_price }}</td>
+            <td>{{ r.points_earned }}</td>
+            <td>{{ r.time }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</section>
+{% endblock %}

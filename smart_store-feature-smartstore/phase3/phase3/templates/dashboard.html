@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- LEFT AD -->
+        <div class="col-md-2 d-none d-md-block">
+            <img src="{% static 'img/ad_left.jpg' %}" class="img-fluid rounded shadow">
+        </div>
+
+        <!-- MAIN DASHBOARD -->
+        <div class="col-md-8">
+
+            <div class="card p-4 shadow mb-4">
+                <h4>{% trans "Account Details" %}</h4>
+                <p><b>{% trans "Name" %}:</b> {{ customer.name }}</p>
+                <p><b>{% trans "Email" %}:</b> {{ customer.email }}</p>
+                <p><b>{% trans "Membership ID" %}:</b> {{ customer.membership_id }}</p>
+                <p><b>{% trans "Points" %}:</b> {{ customer.points }}</p>
+            </div>
+
+            <div class="card p-4 shadow">
+                <h4>{% trans "Purchase History" %}</h4>
+
+                {% if receipts %}
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Date" %}</th>
+                                <th>{% trans "Total" %}</th>
+                                <th>{% trans "Points Earned" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for r in receipts %}
+                            <tr>
+                                <td>{{ r.time }}</td>
+                                <td>${{ r.total_price }}</td>
+                                <td>{{ r.points_earned }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-muted">{% trans "No purchases yet." %}</p>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <!-- RIGHT AD -->
+        <div class="col-md-2 d-none d-md-block">
+            <img src="{% static 'img/ad_right.jpg' %}" class="img-fluid rounded shadow">
+        </div>
+
+    </div>
+</div>
+{% endblock %}

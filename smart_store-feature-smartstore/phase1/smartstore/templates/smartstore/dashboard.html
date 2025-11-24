@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Smart Store – Fridge Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 20px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+    .card { border: 1px solid #ddd; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+    .title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .bad   { color: #b00020; font-weight: 600; }
+    .ok    { color: #0a7d00; font-weight: 600; }
+    .row   { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .gauge { height: 180px; }
+    form.inline { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: end; }
+    .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #f3f4f6; font-size: 12px; }
+    .msg { margin: 6px 0; padding: 8px 10px; border: 1px solid #ddd; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Smart Store – Fridge Dashboard</h1>
+
+  {% if messages %}
+    {% for m in messages %}
+      <div class="msg">{{ m }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="grid">
+    {% for f in fridges %}
+    <div class="card" id="card-{{f.id}}">
+      <div class="title">
+        <h2 style="margin:0">{{ f.name }}</h2>
+        <span class="pill">topic: {{ f.topic }}</span>
+      </div>
+
+      <div class="row">
+        <div>
+          <canvas id="tempGauge-{{f.id}}" class="gauge"></canvas>
+          <div>Temp: <span id="tempVal-{{f.id}}">--</span> °C</div>
+          <div>Threshold: <span id="tempThr-{{f.id}}">{{ f.temp_threshold }}</span> °C</div>
+        </div>
+        <div>
+          <canvas id="humGauge-{{f.id}}" class="gauge"></canvas>
+          <div>Humidity: <span id="humVal-{{f.id}}">--</span> %</div>
+          <div>Threshold: <span id="humThr-{{f.id}}">{{ f.humidity_threshold }}</span> %</div>
+        </div>
+      </div>
+
+      <form class="inline" method="post" action="{% url 'smartstore:update_thresholds' f.id %}">
+        {% csrf_token %}
+        <label>Temp thr (°C)
+          <input type="number" step="0.1" name="temp_threshold" value="{{ f.temp_threshold }}"/>
+        </label>
+        <label>Hum thr (%)
+          <input type="number" step="0.1" name="humidity_threshold" value="{{ f.humidity_threshold }}"/>
+        </label>
+        <button type="submit">Save thresholds</button>
+      </form>
+
+      <div style="margin-top:6px">
+  Fan: <span id="fan-{{f.id}}">{% if f.fan_on %}ON{% else %} OFF {% endif %}</span>
+       
+    </div>
+
+
+      <div style="margin-top:8px;font-size:12px">Last update: <span id="updated-{{f.id}}">{{ f.updated_at }}</span></div>
+      <div id="status-{{f.id}}"></div>
+    </div>
+    {% endfor %}
+  </div>
+{{ fridges_data|json_script:"fridges-data" }}
+<script>
+  const INITIAL = JSON.parse(document.getElementById("fridges-data").textContent);
+
+  function makeGauge(ctx, max, initial) {
+    return new Chart(ctx, {
+      type: 'doughnut',
+      data: { labels: ['Value','Remaining'],
+        datasets: [{ data: [initial, Math.max(max-initial, 0)], borderWidth: 0 }]
+      },
+      options: { responsive: true, cutout: '70%', plugins:{legend:{display:false}}, animation:false }
+    });
+  }
+
+  const gauges = {}; // {id: {temp, hum, maxT, maxH}}
+  for (const f of INITIAL) {
+    const tctx = document.getElementById(`tempGauge-${f.id}`).getContext('2d');
+    const hctx = document.getElementById(`humGauge-${f.id}`).getContext('2d');
+    gauges[f.id] = {
+      temp: makeGauge(tctx, 50, Number(f.temperature ?? 0)),
+      hum:  makeGauge(hctx,100, Number(f.humidity ?? 0)),
+      maxT: 50,
+      maxH: 100,
+    };
+    document.getElementById(`tempVal-${f.id}`).innerText = f.temperature ?? "—";
+    document.getElementById(`humVal-${f.id}`).innerText  = f.humidity ?? "—";
+  }
+
+  async function refresh() {
+    try {
+      const res = await fetch("/api/fridges/latest/");
+      const { fridges } = await res.json();
+      for (const f of fridges) {
+        const g = gauges[f.id];
+        if (!g) continue;
+        const t = Number(f.temperature ?? 0);
+        const h = Number(f.humidity ?? 0);
+
+        g.temp.data.datasets[0].data = [t, Math.max(g.maxT - t, 0)];
+        g.temp.update();
+        g.hum.data.datasets[0].data  = [h, Math.max(g.maxH - h, 0)];
+        g.hum.update();
+
+        document.getElementById(`tempVal-${f.id}`).innerText = isFinite(t) ? t.toFixed(1) : "—";
+        document.getElementById(`humVal-${f.id}`).innerText  = isFinite(h) ? h.toFixed(1) : "—";
+        document.getElementById(`updated-${f.id}`).innerText = f.updated_at ?? "";
+
+        document.getElementById(`tempThr-${f.id}`).innerText = f.temp_threshold ?? "";
+        document.getElementById(`humThr-${f.id}`).innerText  = f.humidity_threshold ?? "";
+        
+        document.getElementById(`fan-${f.id}`).innerText = f.fan_on ? "ON" : "OFF";
+
+
+        const tempBad = (t > (f.temp_threshold ?? Infinity));
+        const humBad  = (h > (f.humidity_threshold ?? Infinity));
+        document.getElementById(`status-${f.id}`).innerHTML =
+          (tempBad || humBad)
+          ? `<div class="bad">⚠ Above threshold${tempBad && humBad ? 's' : ''}</div>`
+          : `<div class="ok">✓ Within thresholds</div>`;
+      }
+    } catch (e) {
+      console.error("refresh failed", e);
+    }
+  }
+
+  refresh();
+  setInterval(refresh, 3000);
+</script>
+
+</body>
+</html>

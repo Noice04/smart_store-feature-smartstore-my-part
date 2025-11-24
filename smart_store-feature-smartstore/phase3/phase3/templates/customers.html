@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+    <h2>Customers</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Points</th>
+            <th></th>
+        </tr>
+        {% for c in customers %}
+        <tr>
+            <td>{{ c.name }}</td>
+            <td>{{ c.email }}</td>
+            <td>{{ c.points }}</td>
+            <td>
+                <form method="POST" style="display:inline">
+                    {% csrf_token %}
+                    <button type="submit" name="delete_customer" value="{{ c.id }}">
+                        DELETE
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</section>
+{% endblock %}

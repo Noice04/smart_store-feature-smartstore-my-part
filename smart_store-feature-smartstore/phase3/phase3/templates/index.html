@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Smart Store Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- TITLE -->
+    <h1 class="mb-4 text-center">🛒 Smart Store Dashboard</h1>
+
+    <!-- NAVIGATION SHORTCUTS -->
+    <div class="d-flex flex-wrap justify-content-center gap-3 mb-4">
+
+        <a href="{% url 'create_customer_page' %}" class="btn btn-primary">
+            {% trans "Create Customer" %}
+        </a>
+
+        <a href="{% url 'create_product_page' %}" class="btn btn-primary">
+            {% trans "Create Product" %}
+        </a>
+
+        <a href="{% url 'add_inventory_page' %}" class="btn btn-primary">
+            {% trans "Add Inventory" %}
+        </a>
+
+        <a href="{% url 'customers_page' %}" class="btn btn-secondary">
+            {% trans "Customers" %}
+        </a>
+
+        <a href="{% url 'products_page' %}" class="btn btn-secondary">
+            {% trans "Products" %}
+        </a>
+
+        <a href="{% url 'inventory_page' %}" class="btn btn-secondary">
+            {% trans "Inventory" %}
+        </a>
+
+        <a href="{% url 'receipts_page' %}" class="btn btn-secondary">
+            {% trans "Receipts" %}
+        </a>
+
+        {% if request.session.customer_id %}
+            <a href="{% url 'dashboard_page' %}" class="btn btn-outline-dark">
+                {% trans "My Account" %}
+            </a>
+            <a href="{% url 'logout_page' %}" class="btn btn-danger">
+                {% trans "Logout" %}
+            </a>
+        {% else %}
+            <a href="{% url 'login_page' %}" class="btn btn-success">
+                {% trans "Login" %}
+            </a>
+            <a href="{% url 'register_page' %}" class="btn btn-info text-white">
+                {% trans "Register" %}
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- DASHBOARD GRID -->
+    <div class="row">
+
+        <!-- CUSTOMERS -->
+        <div class="col-lg-6 mb-4">
+            <div class="card p-4 shadow">
+                <h3>{% trans "Customers" %}</h3>
+                <table class="table table-striped">
+                    <tr>
+                        <th>{% trans "Name" %}</th>
+                        <th>{% trans "Email" %}</th>
+                        <th>{% trans "Points" %}</th>
+                        <th>{% trans "Actions" %}</th>
+                    </tr>
+                    {% for c in customers %}
+                    <tr>
+                        <td>{{ c.name }}</td>
+                        <td>{{ c.email }}</td>
+                        <td>{{ c.points }}</td>
+                        <td>
+                            <form method="POST" style="display:inline">
+                                {% csrf_token %}
+                                <button type="submit" name="delete_customer" value="{{ c.id }}" class="btn btn-sm btn-danger">
+                                    {% trans "Delete" %}
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <!-- PRODUCTS -->
+        <div class="col-lg-6 mb-4">
+            <div class="card p-4 shadow">
+                <h3>{% trans "Products" %}</h3>
+                <table class="table table-striped">
+                    <tr>
+                        <th>{% trans "Name" %}</th>
+                        <th>{% trans "Category" %}</th>
+                        <th>{% trans "Price" %}</th>
+                        <th>{% trans "Stock" %}</th>
+                        <th>{% trans "Actions" %}</th>
+                    </tr>
+                    {% for p in products %}
+                    <tr>
+                        <td>{{ p.name }}</td>
+                        <td>{{ p.category }}</td>
+                        <td>${{ p.price }}</td>
+                        <td>{{ p.stock_quantity }}</td>
+                        <td>
+                            <button onclick="addToCart('{{ p.id }}', '{{ p.name }}', '{{ p.price }}', '{{ p.stock_quantity }}')" class="btn btn-sm btn-success">
+                                {% trans "Add to Cart" %}
+                            </button>
+
+                            <form method="POST" style="display:inline">
+                                {% csrf_token %}
+                                <button type="submit" name="delete_product" value="{{ p.id }}" class="btn btn-sm btn-danger">
+                                    {% trans "Delete" %}
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <!-- INVENTORY -->
+        <div class="col-lg-6 mb-4">
+            <div class="card p-4 shadow">
+                <h3>{% trans "Inventory" %}</h3>
+                <table class="table table-striped">
+                    <tr>
+                        <th>{% trans "Product" %}</th>
+                        <th>{% trans "Date Received" %}</th>
+                        <th>{% trans "Quantity" %}</th>
+                    </tr>
+                    {% for i in inventory %}
+                    <tr>
+                        <td>{{ i.product_id.name }}</td>
+                        <td>{{ i.date_received }}</td>
+                        <td>{{ i.quantity_received }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <!-- RECEIPTS -->
+        <div class="col-lg-6 mb-4">
+            <div class="card p-4 shadow">
+                <h3>{% trans "Receipts" %}</h3>
+                <table class="table table-striped">
+                    <tr>
+                        <th>ID</th>
+                        <th>{% trans "Customer" %}</th>
+                        <th>{% trans "Total" %}</th>
+                        <th>{% trans "Points" %}</th>
+                        <th>{% trans "Date" %}</th>
+                    </tr>
+                    {% for r in receipts %}
+                    <tr>
+                        <td>{{ r.id }}</td>
+                        <td>{{ r.customer.name }}</td>
+                        <td>${{ r.total_price }}</td>
+                        <td>{{ r.points_earned }}</td>
+                        <td>{{ r.time }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <!-- CART -->
+        <div class="col-12 mb-4">
+            <div class="card p-4 shadow">
+                <h3>{% trans "Cart" %}</h3>
+                <table class="table" id="cart-table">
+                    <tr>
+                        <th>{% trans "Name" %}</th>
+                        <th>{% trans "Quantity" %}</th>
+                        <th>{% trans "Price" %}</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="{% static 'js/main.js' %}"></script>
+
+{% endblock %}

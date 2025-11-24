@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+    <h2>Inventory</h2>
+    <table>
+        <tr>
+            <th>Product</th>
+            <th>Date Received</th>
+            <th>Quantity</th>
+        </tr>
+        {% for i in inventory %}
+        <tr>
+            <td>{{ i.product_id.name }}</td>
+            <td>{{ i.date_received }}</td>
+            <td>{{ i.quantity_received }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</section>
+{% endblock %}

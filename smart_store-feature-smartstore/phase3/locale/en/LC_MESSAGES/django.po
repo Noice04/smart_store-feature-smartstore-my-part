@@ -1,0 +1,156 @@
+msgid ""
+msgstr ""
+"Language: en\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#: base.html
+msgid "Smart Checkout"
+msgstr "Smart Checkout"
+
+#: base.html
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: base.html
+msgid "Logout"
+msgstr "Logout"
+
+#: base.html
+msgid "Login"
+msgstr "Login"
+
+#: login.html
+msgid "Customer Login"
+msgstr "Customer Login"
+
+#: login.html
+msgid "Email"
+msgstr "Email"
+
+#: login.html
+msgid "Password"
+msgstr "Password"
+
+#: login.html
+msgid "Sign In"
+msgstr "Sign In"
+
+#: register.html
+msgid "Create Your Account"
+msgstr "Create Your Account"
+
+#: register.html
+msgid "Name"
+msgstr "Name"
+
+#: register.html
+msgid "Confirm Password"
+msgstr "Confirm Password"
+
+#: register.html
+msgid "Register"
+msgstr "Register"
+
+#: dashboard.html
+msgid "Welcome Back"
+msgstr "Welcome Back"
+
+#: dashboard.html
+msgid "Total Points"
+msgstr "Total Points"
+
+#: dashboard.html
+msgid "Purchase History"
+msgstr "Purchase History"
+
+#: receipts.html
+msgid "Receipts"
+msgstr "Receipts"
+
+#: receipts.html
+msgid "Customer"
+msgstr "Customer"
+
+#: receipts.html
+msgid "Total Price"
+msgstr "Total Price"
+
+#: receipts.html
+msgid "Points Earned"
+msgstr "Points Earned"
+
+#: receipts.html
+msgid "Date"
+msgstr "Date"
+
+#: products.html
+msgid "Products"
+msgstr "Products"
+
+#: products.html
+msgid "Category"
+msgstr "Category"
+
+#: products.html
+msgid "Price"
+msgstr "Price"
+
+#: products.html
+msgid "Stock"
+msgstr "Stock"
+
+#: products.html
+msgid "Add to Cart"
+msgstr "Add to Cart"
+
+#: customers.html
+msgid "Customers"
+msgstr "Customers"
+
+#: customers.html
+msgid "Points"
+msgstr "Points"
+
+#: customers.html
+msgid "Delete"
+msgstr "Delete"
+
+#: create_customer.html
+msgid "Create a New Customer"
+msgstr "Create a New Customer"
+
+#: create_customer.html
+msgid "Create Customer"
+msgstr "Create Customer"
+
+#: create_product.html
+msgid "Create Product"
+msgstr "Create Product"
+
+#: add_inventory.html
+msgid "Add Inventory"
+msgstr "Add Inventory"
+
+#: products.html
+msgid "Scan barcode / RFID:"
+msgstr "Scan barcode / RFID:"
+
+#: products.html
+msgid "Add"
+msgstr "Add"
+
+#: products.html
+msgid "Name"
+msgstr "Name"
+
+#: products.html
+msgid "Cart"
+msgstr "Cart"
+
+#: products.html
+msgid "Delete"
+msgstr "Delete"
+
+#: products.html
+msgid "Add to cart"
+msgstr "Add to cart"

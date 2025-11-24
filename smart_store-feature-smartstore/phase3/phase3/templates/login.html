@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center align-items-center">
+
+        <div class="col-md-3 d-none d-md-block">
+            <img src="{% static 'img/ad_left.jpg' %}" class="img-fluid rounded shadow">
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 shadow">
+                <h3 class="text-center mb-3">{% trans "Welcome Back" %}</h3>
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    <button class="btn btn-primary w-100 mt-3">
+                        {% trans "Login" %}
+                    </button>
+                </form>
+
+                <p class="text-center mt-3">
+                    {% trans "Don’t have an account?" %}
+                    <a href="{% url 'register_page' %}">{% trans "Register here" %}</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-3 d-none d-md-block">
+            <img src="{% static 'img/ad_right.jpg' %}" class="img-fluid rounded shadow">
+        </div>
+
+    </div>
+</div>
+{% endblock %}

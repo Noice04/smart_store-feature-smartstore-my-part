@@ -1,0 +1,156 @@
+msgid ""
+msgstr ""
+"Language: fr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#: base.html
+msgid "Smart Checkout"
+msgstr "Caisse Intelligente"
+
+#: base.html
+msgid "Dashboard"
+msgstr "Tableau de bord"
+
+#: base.html
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: base.html
+msgid "Login"
+msgstr "Connexion"
+
+#: login.html
+msgid "Customer Login"
+msgstr "Connexion Client"
+
+#: login.html
+msgid "Email"
+msgstr "Courriel"
+
+#: login.html
+msgid "Password"
+msgstr "Mot de passe"
+
+#: login.html
+msgid "Sign In"
+msgstr "Se connecter"
+
+#: register.html
+msgid "Create Your Account"
+msgstr "Créer votre compte"
+
+#: register.html
+msgid "Name"
+msgstr "Nom"
+
+#: register.html
+msgid "Confirm Password"
+msgstr "Confirmer le mot de passe"
+
+#: register.html
+msgid "Register"
+msgstr "S'inscrire"
+
+#: dashboard.html
+msgid "Welcome Back"
+msgstr "Bon retour"
+
+#: dashboard.html
+msgid "Total Points"
+msgstr "Points totaux"
+
+#: dashboard.html
+msgid "Purchase History"
+msgstr "Historique des achats"
+
+#: receipts.html
+msgid "Receipts"
+msgstr "Reçus"
+
+#: receipts.html
+msgid "Customer"
+msgstr "Client"
+
+#: receipts.html
+msgid "Total Price"
+msgstr "Prix total"
+
+#: receipts.html
+msgid "Points Earned"
+msgstr "Points obtenus"
+
+#: receipts.html
+msgid "Date"
+msgstr "Date"
+
+#: products.html
+msgid "Products"
+msgstr "Produits"
+
+#: products.html
+msgid "Category"
+msgstr "Catégorie"
+
+#: products.html
+msgid "Price"
+msgstr "Prix"
+
+#: products.html
+msgid "Stock"
+msgstr "Inventaire"
+
+#: products.html
+msgid "Add to Cart"
+msgstr "Ajouter au panier"
+
+#: customers.html
+msgid "Customers"
+msgstr "Clients"
+
+#: customers.html
+msgid "Points"
+msgstr "Points"
+
+#: customers.html
+msgid "Delete"
+msgstr "Supprimer"
+
+#: create_customer.html
+msgid "Create a New Customer"
+msgstr "Créer un nouveau client"
+
+#: create_customer.html
+msgid "Create Customer"
+msgstr "Créer le client"
+
+#: create_product.html
+msgid "Create Product"
+msgstr "Créer un produit"
+
+#: add_inventory.html
+msgid "Add Inventory"
+msgstr "Ajouter à l'inventaire"
+
+#: products.html
+msgid "Scan barcode / RFID:"
+msgstr "Scanner le code-barres / RFID :"
+
+#: products.html
+msgid "Add"
+msgstr "Ajouter"
+
+#: products.html
+msgid "Name"
+msgstr "Nom"
+
+#: products.html
+msgid "Cart"
+msgstr "Panier"
+
+#: products.html
+msgid "Delete"
+msgstr "Supprimer"
+
+#: products.html
+msgid "Add to cart"
+msgstr "Ajouter au panier"
